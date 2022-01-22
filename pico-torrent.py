@@ -8,7 +8,7 @@ Developed by: Jazz_Man (alias).
 Applied from the following example: https://www.libtorrent.org/python_binding.html
 
 License:
-Copyright © MMXX Projeto Pindorama.
+Copyright © 2020 Projeto Pindorama.
 pico-torrent is under the Caldera license.
 
 Dependencies:
