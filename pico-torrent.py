@@ -61,7 +61,7 @@ def get_save_dir():
 
 def start_download(filename):
     try:
-        if os.path.isfile(arguments.file):
+        if os.path.isfile(filename):
             params = {'save_path': get_save_dir(), 'ti': lt.torrent_info(filename)}
         else:
             params = lt.parse_magnet_uri(filename)
