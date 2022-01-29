@@ -31,7 +31,7 @@ import argparse, os
 
 argument = argparse.ArgumentParser()
 argument.add_argument("--file", "-f", required=True,
-                       help="Torrent file to download")
+                       help="Torrent file or magnet link to download")
 argument.add_argument("--seeding", "-S", action="store_true",
                        help="Keep seeding after the download is complete")
 argument.add_argument("--infos", "-i",
@@ -49,16 +49,24 @@ arguments = argument.parse_args()
 session = lt.session({'listen_interfaces': '0.0.0.0:10881'})
 
 
+def get_save_dir():
+    if arguments.dir:
+        if os.path.isdir(arguments.dir):
+            return arguments.dir
+        else:
+            print(">>> Invalid Directory")
+    else:
+        return '/tmp/otto_pkg/'
+
+
 def start_download(filename):
     try:
-        info = lt.torrent_info(filename)
-        if arguments.dir:
-            if os.path.isdir(arguments.dir):
-                local = session.add_torrent({'ti': info, 'save_path': arguments.dir})
-            else:
-                print(">>> Invalid Directory")
+        if os.path.isfile(arguments.file):
+            params = {'save_path': get_save_dir(), 'ti': lt.torrent_info(filename)}
         else:
-            local = session.add_torrent({'ti': info, 'save_path': '/tmp/otto_pkg/'})
+            params = lt.parse_magnet_uri(filename)
+            params.save_path = get_save_dir()
+        local = session.add_torrent(params)          
         torrent = local.status()
         if arguments.file and arguments.seeding:
             while True:
