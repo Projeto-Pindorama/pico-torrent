@@ -30,7 +30,8 @@ import argparse, os
 
 
 argument = argparse.ArgumentParser()
-argument.add_argument("--file", "-f",
+exclusive = argument.add_mutually_exclusive_group(required=True)
+exclusive.add_argument("--file", "-f",
                        help="Torrent file or magnet link to download")
 argument.add_argument("--seeding", "-S", action="store_true",
                        help="Keep seeding after the download is complete")
@@ -40,7 +41,7 @@ argument.add_argument("--output", "-O", action="store_true",
                        help="File output; filename")
 #argument.add_argument("--download-priority", "-P", default=lt.pri,
 #                       help="Set download priority")
-argument.add_argument("--link", "-L",
+exclusive.add_argument("--link", "-L",
                        help="Create a magnet link through a file")
 argument.add_argument("--dir", "-d",
 					   help="Specify the download save directory")
