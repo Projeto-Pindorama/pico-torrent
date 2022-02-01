@@ -20,7 +20,6 @@ python3.? pico-torrent -f <file> -d <directory> (-s| )
 
 To-do list:
  > Manually set up the download bandwidth priority;
- > Use magnet link instead of file;
  > Create .torrent files;
  > Cryptography support (perhaps).
 '''
