@@ -17,6 +17,8 @@ Dependencies:
 
 Syntax:
 python3.? pico-torrent -f <file> -d <directory> (-s| )
+or python3.? pico-torrent -L <file>
+
 
 To-do list:
  > Manually set up the download bandwidth priority;
