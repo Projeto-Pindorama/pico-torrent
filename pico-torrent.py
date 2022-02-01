@@ -63,7 +63,7 @@ def get_save_dir():
 
 def show_status(local):
     torrent = local.status()
-    print("\r%.2f%% complete (down: %.1f kB/s up: %.1f kB/s peers: %d) %s" % (
+    print("\r{:.2f}% complete (down: {:1f} kB/s up: {:1f} kB/s peers: {:d}) {}".format(
         torrent.progress * 100, torrent.download_rate / 1000, torrent.upload_rate / 1000,
         torrent.num_peers, torrent.state), end=" ")
 
