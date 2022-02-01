@@ -60,6 +60,13 @@ def get_save_dir():
         return '/tmp/otto_pkg/'
 
 
+def show_status(local):
+    torrent = local.status()
+    print("\r%.2f%% complete (down: %.1f kB/s up: %.1f kB/s peers: %d) %s" % (
+        torrent.progress * 100, torrent.download_rate / 1000, torrent.upload_rate / 1000,
+        torrent.num_peers, torrent.state), end=" ")
+
+
 def start_download(filename):
     try:
         if os.path.isfile(filename):
@@ -71,17 +78,11 @@ def start_download(filename):
         torrent = local.status()
         if arguments.file and arguments.seeding:
             while True:
-                torrent = local.status()
-                print("\r%.2f%% complete (down: %.1f kB/s up: %.1f kB/s peers: %d) %s" % (
-                 torrent.progress * 100, torrent.download_rate / 1000, torrent.upload_rate / 1000,
-                 torrent.num_peers, torrent.state), end=" ")
+                show_status(local)
             print("\n>>> Download complete.\n>>>Seeding")
         elif arguments.file:
             while not torrent.is_seeding:
-                torrent = local.status()
-                print("\r%.2f%% complete (down: %.1f kB/s up: %.1f kB/s peers: %d) %s" % (
-        		 torrent.progress * 100, torrent.download_rate / 1000, torrent.upload_rate / 1000,
-        		 torrent.num_peers, torrent.state), end=" ")
+                show_status(local)
         print("\n>>> Download complete!")
     except KeyboardInterrupt:
         print("\n>>> Exiting...\n")
