@@ -58,7 +58,7 @@ def get_save_dir():
         else:
             print(">>> Invalid Directory")
     else:
-        return '/tmp/otto_pkg/'
+        return os.getcwd() 
 
 
 def show_status(local):
