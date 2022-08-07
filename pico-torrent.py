@@ -27,25 +27,20 @@ To-do list:
 '''
 
 import libtorrent as lt
-import argparse, os
+import argparse
+import os
 
 
 argument = argparse.ArgumentParser()
 exclusive = argument.add_mutually_exclusive_group(required=True)
-exclusive.add_argument("--file", "-f",
-                       help="Torrent file or magnet link to download")
-argument.add_argument("--seeding", "-S", action="store_true",
-                       help="Keep seeding after the download is complete")
-argument.add_argument("--infos", "-i",
-                       help="Show torrent info")
-argument.add_argument("--output", "-O", action="store_true",
-                       help="File output; filename")
-#argument.add_argument("--download-priority", "-P", default=lt.pri,
+exclusive.add_argument("--file", "-f",help="Torrent file or magnet link to download")
+argument.add_argument("--seeding", "-S", action="store_true",help="Keep seeding after the download is complete")
+argument.add_argument("--infos", "-i",help="Show torrent info")
+argument.add_argument("--output", "-O", action="store_true",help="File output; filename")
+# argument.add_argument("--download-priority", "-P", default=lt.pri,
 #                       help="Set download priority")
-exclusive.add_argument("--link", "-L",
-                       help="Create a magnet link through a file")
-argument.add_argument("--dir", "-d",
-					   help="Specify the download save directory")
+exclusive.add_argument("--link", "-L",help="Create a magnet link through a file")
+argument.add_argument("--dir", "-d",help="Specify the download save directory")
 arguments = argument.parse_args()
 
 session = lt.session({'listen_interfaces': '0.0.0.0:10881'})
@@ -55,10 +50,9 @@ def get_save_dir():
     if arguments.dir:
         if os.path.isdir(arguments.dir):
             return arguments.dir
-        else:
-            print(">>> Invalid Directory")
+        print(">>> Invalid Directory")
     else:
-        return os.getcwd() 
+        return os.getcwd()
 
 
 def show_status(local):
@@ -71,11 +65,12 @@ def show_status(local):
 def start_download(filename):
     try:
         if os.path.isfile(filename):
-            params = {'save_path': get_save_dir(), 'ti': lt.torrent_info(filename)}
+            params = {'save_path': get_save_dir(
+            ), 'ti': lt.torrent_info(filename)}
         else:
             params = lt.parse_magnet_uri(filename)
             params.save_path = get_save_dir()
-        local = session.add_torrent(params)          
+        local = session.add_torrent(params)
         torrent = local.status()
         if arguments.file and arguments.seeding:
             while True:
