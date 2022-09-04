@@ -50,6 +50,7 @@ def start_download(source, keep_seeding, save_dir):
     if not source:
         print('>>> Please provide a file/magnet link')
         return
+    session = lt.session({'listen_interfaces': '0.0.0.0:10881'})
     try:
         if os.path.isfile(source):
             params = {'save_path': get_save_dir(save_dir
