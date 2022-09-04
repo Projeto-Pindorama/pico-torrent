@@ -46,21 +46,24 @@ def show_status(local):
         torrent.num_peers, torrent.state), end=" ")
 
 
-def start_download(filename, keep_seeding, save_dir):
+def start_download(source, keep_seeding, save_dir):
+    if not source:
+        print('>>> Please provide a file/magnet link')
+        return
     try:
-        if os.path.isfile(filename):
+        if os.path.isfile(source):
             params = {'save_path': get_save_dir(save_dir
-            ), 'ti': lt.torrent_info(filename)}
+            ), 'ti': lt.torrent_info(source)}
         else:
-            params = lt.parse_magnet_uri(filename)
+            params = lt.parse_magnet_uri(source)
             params.save_path = get_save_dir()
         local = session.add_torrent(params)
         torrent = local.status()
-        if filename and keep_seeding:
+        if keep_seeding:
             while True:
                 show_status(local)
             print("\n>>> Download complete.\n>>>Seeding")
-        elif filename:
+        else:
             while not torrent.is_seeding:
                 show_status(local)
         print("\n>>> Download complete!")
@@ -90,5 +93,5 @@ if __name__ == "__main__":
 
     if arguments.link:
         print(create_magnet(arguments.link))
-    elif arguments.file:
+    else:
         start_download(arguments.file, arguments.seeding, arguments.dir)
