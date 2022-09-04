@@ -53,11 +53,11 @@ def start_download(source, keep_seeding, save_dir):
     session = lt.session({'listen_interfaces': '0.0.0.0:10881'})
     try:
         if os.path.isfile(source):
-            params = {'save_path': get_save_dir(save_dir
-            ), 'ti': lt.torrent_info(source)}
+            params = {'save_path': get_save_dir(save_dir),
+            'ti': lt.torrent_info(source)}
         else:
             params = lt.parse_magnet_uri(source)
-            params.save_path = get_save_dir()
+            params.save_path = get_save_dir(save_dir)
         local = session.add_torrent(params)
         torrent = local.status()
         if keep_seeding:
